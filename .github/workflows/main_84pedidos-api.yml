@@ -1,16 +1,17 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - 84pedidos-api
+name: Compilar, testar e implantar o aplicativo JAVA dentro da AZURE - 84pedidos-api
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+on: #Gatilho para executar a pipeline. 
+  push: #A pipeline será executada após um PUSH no repositório 
+    branches: #O push deverá ser feito na branch main
+      - main #Nome da branch
+  workflow_dispatch: #Executar o worfklow
 
-jobs:
-  build:
+jobs: #Etapas realizadas pela pipeline
+  build: #Etapa de compilação do projeto
+    name: Compilação da aplicação JAVA
     runs-on: ubuntu-latest
     permissions:
       contents: read #This is required for actions/checkout
@@ -18,22 +19,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java version
+      - name: Configurar a versão do JAVA
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
+      - name: Compilar o projeto com Maven
         run: mvn clean install
 
-      - name: Upload artifact for deployment job
+      - name: Faz o Upload do pacote compilado para implantacao
         uses: actions/upload-artifact@v4
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
+    name: Implantar a aplicação na AZURE
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -44,19 +46,19 @@ jobs:
       contents: read #This is required for actions/checkout
   
     steps:
-      - name: Download artifact from build job
+      - name: Baixar o pacote do build para implantação
         uses: actions/download-artifact@v4
         with:
           name: java-app
       
-      - name: Login to Azure
+      - name: Fazer login na AZURE
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AFD2ACAAFCCD45FCB2361064C6CBCD90 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5BEF86353BF548CD9410954FBB674612 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ECFE9EECD0AC44F0BEE5F401C6BA89F4 }}
 
-      - name: Deploy to Azure Web App
+      - name: Implantação do projeto na AZURE
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
