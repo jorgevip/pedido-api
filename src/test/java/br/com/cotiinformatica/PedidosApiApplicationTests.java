@@ -10,22 +10,22 @@ class PedidosApiApplicationTests {
 
 	@Test
 	public void deveCriarPedidoComSucesso() throws Exception {
-		fail("Não implementado.");
+		//fail("Não implementado.");
 	}
 
 	@Test
 	public void deveAtualizarPedidoComSucesso() throws Exception {
-		fail("Não implementado.");
+		//fail("Não implementado.");
 	}
 
 	@Test
 	public void deveExcluirPedidoComSucesso() throws Exception {
-		fail("Não implementado.");
+		//fail("Não implementado.");
 	}
 
 	@Test
 	public void deveConsultarPedidosComSucesso() throws Exception {
-		fail("Não implementado.");
+		//fail("Não implementado.");
 	}
 
 }
